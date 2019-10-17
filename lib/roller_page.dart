@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import './dice_roll.dart';
+import './roller.dart';
+import './rollers_provider.dart';
 
-class RollerList extends StatelessWidget {
-  final _rollers = [
-    DiceRollSpec(count: 1, sides: 20, bonus: 0),
-    DiceRollSpec(count: 1, sides: 20, bonus: 5),
-    DiceRollSpec(count: 1, sides: 100, bonus: 0),
-    DiceRollSpec(count: 6, sides: 6, bonus: 18),
-  ];
-
-  _showRollDialog (BuildContext context, DiceRollSpec roller) {
+class RollerPage extends StatelessWidget {
+  _showRollDialog (BuildContext context, Roller roller) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -30,9 +24,9 @@ class RollerList extends StatelessWidget {
     );
   }
 
-  _buildRollerList(BuildContext context) {
-    final Iterable<ListTile> tiles = _rollers.map(
-      (DiceRollSpec roller) {
+  _buildRollerList(BuildContext context, List<Roller> rollers) {
+    final Iterable<ListTile> tiles = rollers.map(
+      (Roller roller) {
         return ListTile(
           title: Text("${roller.count}d${roller.sides} + ${roller.bonus}"),
           trailing: Text('Roll'),
@@ -53,11 +47,18 @@ class RollerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rollersBloc = RollersProvider.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Name Generator')
       ),
-      body: _buildRollerList(context),
+      body: StreamBuilder<List<Roller>>(
+        stream: rollersBloc.rollers,
+        initialData: [],
+        builder: (context, snapshot) {
+          return _buildRollerList(context, snapshot.data);
+        }
+      ),
     );
   }
 }

@@ -1,30 +1,32 @@
 import 'dart:math';
 
-class DiceRollResult {
+class RollerResult {
   final List<int> rolls;
   final int sum;
   final int bonus;
 
-  const DiceRollResult({
+  const RollerResult({
     this.rolls,
     this.sum,
     this.bonus,
   });
 }
 
-class DiceRollSpec {
+class Roller {
   final int count;
   final int sides;
   final int bonus;
+  final String name;
   final random = Random();
 
-  const DiceRollSpec({
+  Roller({
     this.count,
     this.sides,
     this.bonus,
+    this.name,
   });
 
-  DiceRollResult roll() {
+  RollerResult roll() {
     var sum = bonus;
     var rolls = List<int>();
 
@@ -34,7 +36,7 @@ class DiceRollSpec {
       sum += roll;
     }
 
-    return DiceRollResult(
+    return RollerResult(
       sum: sum,
       rolls: rolls,
       bonus: bonus,
