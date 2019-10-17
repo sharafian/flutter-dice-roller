@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './roller.dart';
 import './rollers_provider.dart';
+import './add_roller_page.dart';
 
 class RollerPage extends StatelessWidget {
   _showRollDialog (BuildContext context, Roller roller) {
@@ -50,7 +51,7 @@ class RollerPage extends StatelessWidget {
     final rollersBloc = RollersProvider.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Name Generator')
+        title: Text('Dice Roller')
       ),
       body: StreamBuilder<List<Roller>>(
         stream: rollersBloc.rollers,
@@ -58,6 +59,16 @@ class RollerPage extends StatelessWidget {
         builder: (context, snapshot) {
           return _buildRollerList(context, snapshot.data);
         }
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (_) {
+              return AddRollerPage();
+            },
+          ));
+        },
       ),
     );
   }

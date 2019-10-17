@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RollersProvider(
       child: MaterialApp(
-        title: 'Name Generator',
+        title: 'Dice Roller',
         theme: ThemeData(
           primaryColor: Colors.white,
         ),
