@@ -9,16 +9,17 @@ class AddRollerForm extends StatefulWidget {
 
 class AddRollerFormState extends State<AddRollerForm> {
   final _formKey = GlobalKey<FormState>();
+  final _nameKey = GlobalKey<FormFieldState>();
+  final _sidesKey = GlobalKey<FormFieldState>();
+  final _countKey = GlobalKey<FormFieldState>();
+  final _bonusKey = GlobalKey<FormFieldState>();
 
   List<Widget> _formFields(BuildContext context) {
-    final rollersBloc = RollersProvider.of(context);
-
     return [
       TextFormField(
+        key: _nameKey,
         validator: (value) {
-          if (value.isEmpty) {
-            return 'Please provide a value';
-          }
+          if (value.isEmpty) return 'Please provide a value';
           return null;
         },
         decoration: InputDecoration(
@@ -28,14 +29,13 @@ class AddRollerFormState extends State<AddRollerForm> {
       ),
 
       TextFormField(
+        key: _sidesKey,
         initialValue: '20',
         keyboardType: TextInputType.numberWithOptions(
           signed: false,
         ),
         validator: (value) {
-          if (value.isEmpty) {
-            return 'Please provide a value';
-          }
+          if (value.isEmpty) return 'Please provide a value';
           return null;
         },
         decoration: InputDecoration(
@@ -45,14 +45,13 @@ class AddRollerFormState extends State<AddRollerForm> {
       ),
 
       TextFormField(
+        key: _countKey,
         initialValue: '1',
         keyboardType: TextInputType.numberWithOptions(
           signed: false,
         ),
         validator: (value) {
-          if (value.isEmpty) {
-            return 'Please provide a value';
-          }
+          if (value.isEmpty) return 'Please provide a value';
           return null;
         },
         decoration: InputDecoration(
@@ -62,6 +61,7 @@ class AddRollerFormState extends State<AddRollerForm> {
       ),
 
       TextFormField(
+        key: _bonusKey,
         initialValue: '0',
         keyboardType: TextInputType.numberWithOptions(
           signed: true,
@@ -83,22 +83,28 @@ class AddRollerFormState extends State<AddRollerForm> {
         child: RaisedButton(
           child: Text('Submit'),
           onPressed: () {
-            if (!_formKey.currentState.validate()) {
-              return;
-            }
-
-            rollersBloc.addition.add(Roller(
-              count: 1,
-              sides: 2,
-              bonus: 3,
-            ));
-
-            // We're done with this form
-            Navigator.of(context).pop();
+            return _submitForm(context);
           },
         ),
       ),
     ];
+  }
+
+  void _submitForm(context) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    final rollersBloc = RollersProvider.of(context);
+    rollersBloc.addition.add(Roller(
+      name: _nameKey.currentState.value,
+      count: int.parse(_countKey.currentState.value),
+      sides: int.parse(_sidesKey.currentState.value),
+      bonus: int.parse(_bonusKey.currentState.value),
+    ));
+
+    // We're done with this form
+    Navigator.of(context).pop();
   }
 
   @override

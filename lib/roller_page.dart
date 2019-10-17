@@ -10,7 +10,7 @@ class RollerPage extends StatelessWidget {
       builder: (BuildContext context) {
         final result = roller.roll();
         return new AlertDialog(
-          title: new Text(result.sum.toString()),
+          title: new Text("${roller.name} ${result.sum}"),
           content: new Text("${result.rolls.join(' + ')}, bonus ${result.bonus}"),
           actions: <Widget>[
             new FlatButton(
@@ -29,7 +29,7 @@ class RollerPage extends StatelessWidget {
     final Iterable<ListTile> tiles = rollers.map(
       (Roller roller) {
         return ListTile(
-          title: Text("${roller.count}d${roller.sides} + ${roller.bonus}"),
+          title: Text("${roller.name}, ${roller.count}d${roller.sides} + ${roller.bonus}"),
           trailing: Text('Roll'),
           onTap: () => _showRollDialog(context, roller),
         );
